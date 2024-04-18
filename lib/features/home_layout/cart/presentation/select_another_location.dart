@@ -263,6 +263,7 @@ class _MapToSelectAnotherLocationState
                         FadePageRoute(
                           builder: (context) => PreviousAdress(
                             address: _currentAddress,
+                            amount: '',
                           ),
                         ),
                       );

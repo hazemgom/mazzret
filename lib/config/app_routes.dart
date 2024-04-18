@@ -199,7 +199,9 @@ class RouteGenerator {
         );
       case RouteName.addAdressToConfirmOrderRoute:
         return PageTransition(
-          child: AddAdressToConfirmOrder(),
+          child: AddAdressToConfirmOrder(
+            amount: '',
+          ),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -214,11 +216,14 @@ class RouteGenerator {
       case RouteName.previousAdressRoute:
         // final totalPrice = settings.arguments as dynamic;
         final String? address = settings.arguments as String?;
+        final String? amount = settings.arguments as String?;
 
         return PageTransition(
           child: PreviousAdress(
             // totalPrice: totalPrice,
-            address: address,
+            address: '',
+            amount: '',
+
           ),
           type: PageTransitionType.fade,
           settings: settings,

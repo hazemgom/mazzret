@@ -27,6 +27,7 @@ class _MoamalatPayState extends State<MoamalatPay> {
 
         onCompleteSucsses: (value) {
 print(value.displayData.toString());
+
         },
         onError: (error) {},
       ),

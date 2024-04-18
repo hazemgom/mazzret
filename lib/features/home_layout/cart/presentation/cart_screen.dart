@@ -9,6 +9,7 @@ import 'package:mozart_flutter_app/config/app_routes.dart';
 import 'package:mozart_flutter_app/features/auth/data/data_provider/local/cach_keys.dart';
 import 'package:mozart_flutter_app/features/auth/data/data_provider/local/cache.dart';
 import 'package:mozart_flutter_app/features/home_layout/cart/managers/user_cart_cubit.dart';
+import 'package:mozart_flutter_app/features/home_layout/cart/presentation/previous_adress.dart';
 import 'package:mozart_flutter_app/features/home_layout/cart/presentation/widget/custom_empty_cart.dart';
 import 'package:mozart_flutter_app/features/home_layout/cart/presentation/widget/custom_product_in_cart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -289,12 +290,13 @@ class _CartScreenState extends State<CartScreen> {
                             children: [
                               CustomButtonWidget(
                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    RouteName.previousAdressRoute,
-                                    arguments: userCartList.data!.user!.address,
-                                    // userCartList.data!.totalCartPrice,
-                                  );
+                                  print('ammmmmmount ${userCartList.data!.totalCartPrice}');
+                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                    return PreviousAdress(
+                                      amount:'${userCartList.data!.totalCartPrice}',
+                                      address: userCartList.data!.user!.address,
+                                    );
+                                  }));
                                 },
                                 text: AppLocalizations.of(context)!.next,
                                 height: 48.h,

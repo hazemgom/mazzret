@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mozart_flutter_app/features/home_layout/cart/presentation/payment-screen.dart';
 import 'package:mozart_flutter_app/utils/custom_widgets/custom_botton.dart';
 import 'package:mozart_flutter_app/utils/custom_widgets/custom_phone_text_field.dart';
 import 'package:mozart_flutter_app/utils/custom_widgets/custom_text_field_connect_us.dart';
@@ -11,7 +12,8 @@ import 'package:mozart_flutter_app/utils/styles/fonts.dart';
 final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
 class AddAdressToConfirmOrder extends StatefulWidget {
-  AddAdressToConfirmOrder({Key? key}) : super(key: key);
+  AddAdressToConfirmOrder({required this.amount,Key? key}) : super(key: key);
+  String amount;
 
   @override
   State<AddAdressToConfirmOrder> createState() =>
@@ -20,6 +22,11 @@ class AddAdressToConfirmOrder extends StatefulWidget {
 
 class _AddAdressToConfirmOrderState extends State<AddAdressToConfirmOrder> {
   TextEditingController controller = TextEditingController();
+  TextEditingController controller1 = TextEditingController();
+  TextEditingController controller2 = TextEditingController();
+  TextEditingController controller3 = TextEditingController();
+  TextEditingController controller4 = TextEditingController();
+  TextEditingController controller6 = TextEditingController();
 
   List<String> list = [
     "فرع الشرقية",
@@ -90,7 +97,7 @@ class _AddAdressToConfirmOrderState extends State<AddAdressToConfirmOrder> {
                       ),
                       CustomTextFormFiled(
                         label: " ",
-                        controller: controller,
+                        controller: controller1,
                         validator: (text) {
                           if (text!.isEmpty || text == null) {
                             return "${AppLocalizations.of(context)!.pleaseenteryour} ${AppLocalizations.of(context)!.locationindetail}";
@@ -111,7 +118,7 @@ class _AddAdressToConfirmOrderState extends State<AddAdressToConfirmOrder> {
                       ),
                       CustomPhoneTextField(
                         text: " ",
-                        controller: controller,
+                        controller: controller2,
                         validator: (text) {
                           if (text!.isEmpty || text == null) {
                             return "${AppLocalizations.of(context)!.pleaseenteryour} ${AppLocalizations.of(context)!.thephonenumberatthelocation}";
@@ -131,7 +138,7 @@ class _AddAdressToConfirmOrderState extends State<AddAdressToConfirmOrder> {
                       ),
                       CustomTextFormFiled(
                         label: " ",
-                        controller: controller,
+                        controller: controller3,
                         validator: (text) {
                           if (text!.isEmpty || text == null) {
                             return "${AppLocalizations.of(context)!.pleaseenteryour} ${AppLocalizations.of(context)!.city}";
@@ -151,7 +158,7 @@ class _AddAdressToConfirmOrderState extends State<AddAdressToConfirmOrder> {
                       ),
                       CustomTextFormFiled(
                         label: " ",
-                        controller: controller,
+                        controller: controller4,
                         validator: (text) {
                           if (text!.isEmpty || text == null) {
                             return "${AppLocalizations.of(context)!.pleaseenteryour} ${AppLocalizations.of(context)!.zipcountry}";
@@ -210,7 +217,7 @@ class _AddAdressToConfirmOrderState extends State<AddAdressToConfirmOrder> {
                 child: CustomTextFormFieldConnectUs(
                   label:
                       AppLocalizations.of(context)!.deliverynotestothisaddress,
-                  controller: controller,
+                  controller: controller4,
                   maxLines: 3,
                   validator: (p0) {
 
@@ -222,7 +229,10 @@ class _AddAdressToConfirmOrderState extends State<AddAdressToConfirmOrder> {
                 width: 274.w,
                 text: AppLocalizations.of(context)!.confirm,
                 onPressed: () {
-                  if (formKey.currentState!.validate()) {}
+                  if (formKey.currentState!.validate()) {
+
+
+                  }
                 },
               )
             ],

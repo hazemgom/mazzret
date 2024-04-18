@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:moamalat_payment/moamalat_payment.dart';
 import 'package:mozart_flutter_app/config/app_routes.dart';
 import 'package:mozart_flutter_app/features/auth/data/data_provider/local/cach_keys.dart';
 import 'package:mozart_flutter_app/features/auth/data/data_provider/local/cache.dart';
@@ -17,11 +18,12 @@ import 'package:mozart_flutter_app/utils/styles/fonts.dart';
 class PreviousAdress extends StatefulWidget {
   // int? totalPrice;
   String? address;
+  String? amount;
 
   PreviousAdress({
     Key? key,
     // required this.totalPrice,
-    required this.address,
+    required this.address, required this.amount
   }) : super(key: key);
 
   @override
@@ -67,6 +69,7 @@ class _PreviousAdressState extends State<PreviousAdress> {
       }
     }, builder: (context, state) {
       var cartCubit = UserCartCubit.get(context);
+      print('ammmmmmmmmmmmount${widget.amount}');
 
       return Scaffold(
         appBar: AppBar(
@@ -261,10 +264,32 @@ class _PreviousAdressState extends State<PreviousAdress> {
                               messageColor: Colors.orangeAccent,
                             );
                           } else {
-                            cartCubit.addOrderFunction(
-                              cartId: id,
-                              branchId: cartCubit.addressDataModel.branchId!,
-                            );
+print('ammmmmmmmmmmmmmmmount ${widget.amount}');
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return Scaffold(
+                                appBar: AppBar(),
+                                body: MoamalatPayment(
+                                  isTest:
+                                  true,
+                                  merchantId: "10081014649",
+                                  merchantReference: "PS_Merchant",
+                                  terminalId: "99179395",
+                                  amount:'92000',
+                                  merchantSecretKey:
+                                  "39636630633731362D663963322D346362642D386531662D633963303432353936373431", //put your merchantSecretKey
+
+                                  onCompleteSucsses: (value) {
+                                    print(value.displayData.toString());
+                                    cartCubit.addOrderFunction(
+                                      cartId: id,
+                                      branchId: cartCubit.addressDataModel.branchId!,
+                                    );
+                                  },
+                                  onError: (error) {},
+                                ),
+                              );
+
+                            }));
                           }
 
                           /// In Params
