@@ -361,7 +361,6 @@ extension LatLngExtension on Position {
   }
 }
 
-
 class AdminMapToSearch extends StatefulWidget {
   @override
   _AdminMapToSearchState createState() => _AdminMapToSearchState();
@@ -394,8 +393,26 @@ class _AdminMapToSearchState extends State<AdminMapToSearch> {
   Future<void> _getCurrentLocation() async {
     try {
       LocationPermission permission = await Geolocator.requestPermission();
+
       if (permission == LocationPermission.denied) {
         // Handle denied permission
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Location Permission Denied"),
+              content:  Text("Please enable location permissions in settings to use this feature."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
         return;
       }
 
@@ -443,7 +460,7 @@ class _AdminMapToSearchState extends State<AdminMapToSearch> {
       Placemark placemark = placemarks.first;
       setState(() {
         _currentAddress =
-        '${placemark.name}, ${placemark.locality}, ${placemark.postalCode}, ${placemark.country}';
+            '${placemark.name}, ${placemark.locality}, ${placemark.postalCode}, ${placemark.country}';
         _selectedLocation = position;
       });
     }
@@ -468,11 +485,11 @@ class _AdminMapToSearchState extends State<AdminMapToSearch> {
   Future<void> _searchPlace(String searchTerm) async {
     try {
       List<Location> locations =
-      await GeocodingPlatform.instance.locationFromAddress(searchTerm);
+          await GeocodingPlatform.instance.locationFromAddress(searchTerm);
       if (locations.isNotEmpty) {
         Location location = locations.first;
         List<Placemark> placemarks =
-        await GeocodingPlatform.instance.placemarkFromCoordinates(
+            await GeocodingPlatform.instance.placemarkFromCoordinates(
           location.latitude,
           location.longitude,
         );
@@ -577,7 +594,11 @@ class _AdminMapToSearchState extends State<AdminMapToSearch> {
         children: [
           CustomTextFormFiled(
             label:
-            AppLocalizations.of(context)!.searchForSelectTheBranchLocation,
+                AppLocalizations.of(context)!.searchForSelectTheBranchLocation,
+            onFieldSubmitted: (value) {
+              String searchTerm = _searchController.text;
+              _searchPlace(searchTerm);
+            },
             suffixIcon: IconButton(
               onPressed: _clearSearch,
               icon: const Icon(
@@ -592,7 +613,7 @@ class _AdminMapToSearchState extends State<AdminMapToSearch> {
               icon: Icon(Icons.search, size: 28.sp),
             ),
             hintText:
-            AppLocalizations.of(context)!.searchForSelectTheBranchLocation,
+                AppLocalizations.of(context)!.searchForSelectTheBranchLocation,
             controller: _searchController,
           ),
           Expanded(
@@ -681,111 +702,111 @@ class _AdminMapToSearchState extends State<AdminMapToSearch> {
           _selectedLocation == null
               ? Container()
               : Container(
-            padding: EdgeInsets.all(16.sp),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.primaryColor,
-              ),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.currentLocation,
-                      style: GoogleFonts.cairo(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  padding: EdgeInsets.all(16.sp),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppColors.primaryColor,
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      _currentPosition != null
-                          ? 'Latitude: ${_currentPosition!.latitude}, Longitude: ${_currentPosition!.longitude}'
-                          : 'Getting current location...',
-                      style: GoogleFonts.cairo(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w500,
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.currentLocation,
+                            style: GoogleFonts.cairo(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            _currentPosition != null
+                                ? 'Latitude: ${_currentPosition!.latitude}, Longitude: ${_currentPosition!.longitude}'
+                                : 'Getting current location...',
+                            style: GoogleFonts.cairo(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.primaryColor,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20.h),
+                      Row(
+                        children: [
+                          Text(
+                            '${AppLocalizations.of(context)!.lat} & ${AppLocalizations.of(context)!.lng}: ',
+                            style: GoogleFonts.cairo(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '${_selectedLocation?.latitude ?? ''}, ${_selectedLocation?.longitude ?? ''}',
+                            style: GoogleFonts.cairo(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '${AppLocalizations.of(context)!.address}: ',
+                            style: GoogleFonts.cairo(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              _currentAddress,
+                              style: GoogleFonts.cairo(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      CustomButtonWidget(
+                        borderRadius: 10.r,
+                        width: 220.w,
+                        height: 49.h,
                         color: AppColors.primaryColor,
+                        text: AppLocalizations.of(context)!.done,
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            FadePageRoute(
+                              builder: (context) => AddNewUser(
+                                address: _currentAddress,
+                                lat: _selectedLocation!.latitude.toString(),
+                                lng: _selectedLocation!.longitude.toString(),
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                SizedBox(height: 20.h),
-                Row(
-                  children: [
-                    Text(
-                      '${AppLocalizations.of(context)!.lat} & ${AppLocalizations.of(context)!.lng}: ',
-                      style: GoogleFonts.cairo(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      '${_selectedLocation?.latitude ?? ''}, ${_selectedLocation?.longitude ?? ''}',
-                      style: GoogleFonts.cairo(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      '${AppLocalizations.of(context)!.address}: ',
-                      style: GoogleFonts.cairo(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        _currentAddress,
-                        style: GoogleFonts.cairo(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                CustomButtonWidget(
-                  borderRadius: 10.r,
-                  width: 220.w,
-                  height: 49.h,
-                  color: AppColors.primaryColor,
-                  text: AppLocalizations.of(context)!.done,
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      FadePageRoute(
-                        builder: (context) => AddNewUser(
-                          address: _currentAddress,
-                          lat: _selectedLocation!.latitude.toString(),
-                          lng: _selectedLocation!.longitude.toString(),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );

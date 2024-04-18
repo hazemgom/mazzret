@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mozart_flutter_app/features/admin/sql_connection/data/data_provider/local/cache.dart';
 import 'package:mozart_flutter_app/utils/custom_widgets/cache_image.dart';
 import 'package:mozart_flutter_app/utils/styles/colors.dart';
 import 'package:mozart_flutter_app/utils/styles/fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../features/auth/data/data_provider/local/cach_keys.dart';
 import '../../features/home_layout/home/data/models/product_model.dart';
 import '../../features/home_layout/home/managers/home_cubit.dart';
+import '../../main.dart';
 
 class CustomProduct extends StatefulWidget {
   const CustomProduct({
@@ -16,7 +20,7 @@ class CustomProduct extends StatefulWidget {
     this.model,
     this.cubit,
     required this.image,
-    this.height = 155,
+    this.height = 170,
     this.width = 135,
   }) : super(key: key);
   final String text1;
@@ -36,12 +40,27 @@ class _CustomProductState extends State<CustomProduct> {
   bool isLoading = false;
   int count = 0;
 
+  void addToCart() async {
+    setState(() {
+      isLoading = true;
+    });
+    await widget.cubit!.addToCart(
+      productId: widget.model!.id!,
+      quantity: count,
+    );
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(
-        10.w,
-      ),
+      padding: EdgeInsets.all(10.w),
       child: Stack(
         children: [
           Container(
@@ -92,93 +111,87 @@ class _CustomProductState extends State<CustomProduct> {
               ),
             ),
           ),
-          if (widget.model != null)
-            Positioned(
-              bottom: 0.h,
-              right: 10.w,
-              child: Row(
-                children: [
-                  if (isOpen)
-                    InkWell(
-                      onTap: () {
-                        isLoading = true;
-                        widget.cubit!
-                            .addToCart(
-                          productId: widget.model!.id!,
-                          quantity: count,
-                        )
-                            .then((value) {
-                          isLoading = false;
-                        });
-                        setState(() {});
-                      },
-                      child: CircleAvatar(
-                        backgroundColor: Colors.green,
-                        radius: 10,
-                        child: isLoading
-                            ? const CircularProgressIndicator()
-                            : Icon(
-                                size: 14,
-                                Icons.add_shopping_cart_outlined,
-                                color: AppColors.blue,
-                              ),
+          if (pref.getString('role') == 'user-normal' ||
+              pref.getString('role') == 'user-wholesale')
+            if (widget.model != null)
+              Positioned(
+                bottom: 0.h,
+                right: 10.w,
+                child: Row(
+                  children: [
+                    if (isOpen)
+                      InkWell(
+                        onTap: isLoading ? null : addToCart,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.green,
+                          radius: 10,
+                          child: isLoading
+                              ? const CircularProgressIndicator()
+                              : Icon(
+                                  size: 14,
+                                  Icons.add_shopping_cart_outlined,
+                                  color: AppColors.blue,
+                                ),
+                        ),
                       ),
-                    ),
-                  if (isOpen) SizedBox(width: 5.w),
-                  if (isOpen)
+                    if (isOpen) SizedBox(width: 5.w),
+                    if (isOpen)
+                      InkWell(
+                        onTap: isLoading
+                            ? null
+                            : () {
+                                if (count > 0) {
+                                  count--;
+                                }
+                                if (count == 0) {
+                                  setState(() {
+                                    isOpen = false;
+                                  });
+                                }
+                              },
+                        child: CircleAvatar(
+                          backgroundColor: AppColors.primaryColor,
+                          minRadius: 10.r,
+                          child: Icon(
+                            Icons.remove,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
+                    if (isOpen) SizedBox(width: 5.w),
+                    if (isOpen)
+                      Text(
+                        count.toString(),
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    if (isOpen) SizedBox(width: 5.w),
                     InkWell(
                       onTap: isLoading
                           ? null
                           : () {
-                              if (count > 0) {
-                                count--;
+                              setState(() {
+                                isOpen = true;
+                              });
+                              if (count < widget.model!.quantity!) {
+                                setState(() {
+                                  count++;
+                                });
                               }
-                              if (count == 0) {
-                                isOpen = false;
-                              }
-                              setState(() {});
                             },
                       child: CircleAvatar(
                         backgroundColor: AppColors.primaryColor,
-                        minRadius: 10.r,
+                        minRadius: 10,
                         child: Icon(
-                          Icons.remove,
+                          Icons.add,
                           color: AppColors.white,
                         ),
                       ),
                     ),
-                  if (isOpen) SizedBox(width: 5.w),
-                  if (isOpen)
-                    Text(
-                      count.toString(),
-                      style: const TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  if (isOpen) SizedBox(width: 5.w),
-                  InkWell(
-                    onTap: isLoading
-                        ? null
-                        : () {
-                            isOpen = true;
-                            if (count <= widget.model!.quantity!) {
-                              count++;
-                            }
-
-                            setState(() {});
-                          },
-                    child: CircleAvatar(
-                      backgroundColor: AppColors.primaryColor,
-                      minRadius: 10,
-                      child: Icon(
-                        Icons.add,
-                        color: AppColors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
+                  ],
+                ),
+              )
         ],
       ),
     );

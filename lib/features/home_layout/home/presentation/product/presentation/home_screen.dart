@@ -68,10 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                 Padding(
-                   padding: const EdgeInsets.all(8.0),
-                   child: BannerScreen(),
-                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: BannerScreen(),
+                ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,
                 //   children: [
@@ -273,7 +273,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
                 /// Products
-                state is GetProductHighNySoldLoadingState || homeCubit.productModel == null
+                state is GetProductHighNySoldLoadingState ||
+                        homeCubit.productModel == null
                     ? Padding(
                         padding: EdgeInsets.only(top: 20.h),
                         child: const CustomLoading(),
@@ -284,9 +285,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: homeCubit.productModel!.data!.length,
                         gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 1.1.h,
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                          mainAxisExtent: 210.0,
+                          maxCrossAxisExtent: 240.0,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
                         ),
                         itemBuilder: (context, index) {
                           return GestureDetector(
@@ -301,25 +304,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               );
                               homeCubit.getSpecificProductFunction(
-                                productId: homeCubit
-                                    .productModel!.data![index].id!,
+                                productId:
+                                    homeCubit.productModel!.data![index].id!,
                               );
                             },
                             child: CustomProduct(
-                              cubit: homeCubit,
-                                model: homeCubit
-                                    .productModel!.data![index],
+                                cubit: homeCubit,
+                                model: homeCubit.productModel!.data![index],
                                 width: 180.w,
                                 image: homeCubit
                                     .productModel!.data![index].image!.url!,
-                                text1: MyCache.getString(
-                                            key: CacheKeys.lang) ==
+                                text1: MyCache.getString(key: CacheKeys.lang) ==
                                         'ar'
                                     ? homeCubit
                                         .productModel!.data![index].titleAr!
                                     : homeCubit
                                         .productModel!.data![index].title!,
-                                text2: '${MyCache.getString(key: CacheKeys.role) == 'user-normal' ? homeCubit.productModel!.data![index].priceNormal! : homeCubit.productModel!.data![index].priceWholesale!} ${AppLocalizations.of(context)!.egp}'),
+                                text2:
+                                    '${MyCache.getString(key: CacheKeys.role) == 'user-normal' ? homeCubit.productModel!.data![index].priceNormal! : homeCubit.productModel!.data![index].priceWholesale!} ${AppLocalizations.of(context)!.egp}'),
                           );
                         }),
                 // Padding(

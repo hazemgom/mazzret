@@ -18,7 +18,9 @@ class CustomTextFormFiled extends StatelessWidget {
     this.keyboardType,
     this.textDirection,
     this.floatingLabelBehavior,
+    this.onFieldSubmitted,
   });
+  ValueChanged<String>? onFieldSubmitted;
 
   String label;
   final Widget? suffixIcon;
@@ -47,6 +49,7 @@ class CustomTextFormFiled extends StatelessWidget {
           keyboardType: keyboardType,
           obscureText: obscureText,
           controller: controller,
+          onFieldSubmitted: onFieldSubmitted,
           style: GoogleFonts.cairo(
              height: 1.4.h,
             fontSize: 18.sp,

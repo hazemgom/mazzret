@@ -23,9 +23,15 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     _initLocation();
   }
-
   Future<void> _initLocation() async {
     try {
+      LocationPermission permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Handle the case when the user denies location permission
+        print('Location permission denied.');
+        return;
+      }
+
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       setState(() {
@@ -38,7 +44,9 @@ class _MapScreenState extends State<MapScreen> {
         );
       });
     } catch (e) {
-      print("Error: $e");
+      // Handle errors
+      print("Error getting location: $e");
+      // You can choose to show an error message to the user or retry getting the location
     }
   }
 

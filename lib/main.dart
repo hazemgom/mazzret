@@ -11,12 +11,28 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/dio-helper.dart';
 
+late SharedPreferences pref;
+
+Future<void> init() async {
+  try {
+    pref =
+        await SharedPreferences.getInstance(); // Initialize SharedPreferences
+    print('************************');
+  } catch (e) {
+    // Handle initialization errors
+    print('Error initializing SharedPreferences: $e');
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   // await GeocodingPlatform.instance.;
   var preferences = await SharedPreferences.getInstance();
   preferences.remove('myLocation');
+  await init();
+  print('************************');
+  print(pref.getString('myLocation'));
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -49,4 +65,4 @@ void main() async {
 //       ),
 //       home: Search(),
 //     );
-  }
+}

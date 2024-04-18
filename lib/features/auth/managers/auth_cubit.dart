@@ -8,6 +8,7 @@ import 'package:mozart_flutter_app/features/auth/data/data_provider/remote/dio_h
 import 'package:mozart_flutter_app/features/auth/data/models/user_model.dart';
 import 'package:mozart_flutter_app/utils/constants/constants.dart';
 import 'package:mozart_flutter_app/utils/location_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_state.dart';
 
@@ -31,6 +32,8 @@ class AuthCubit extends Cubit<AuthState> {
     required String password,
   }) async {
     emit(LoginLoadingState());
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
     await dioHelper
         .postData(
             endPoint: AppConstants.loginUrl,
@@ -54,6 +57,12 @@ class AuthCubit extends Cubit<AuthState> {
       MyCache.putBoolean(key: CacheKeys.active, value: userModel.data!.active!);
       MyCache.putString(
           key: CacheKeys.userId, value: response.data['data']['userId']);
+      pref.setString('token', userModel.token!);
+      pref.setString('role', userModel.data!.role!);
+      pref.setString('fullName', userModel.data!.name!);
+      pref.setString('email', userModel.data!.email!);
+      pref.setBool('active', userModel.data!.active!);
+      pref.setString('userId', response.data['data']['userId']);
       print(MyCache.getString(key: CacheKeys.token));
       print(
           "************************************${MyCache.getString(key: CacheKeys.token)}");
