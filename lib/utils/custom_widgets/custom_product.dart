@@ -117,79 +117,87 @@ class _CustomProductState extends State<CustomProduct> {
               Positioned(
                 bottom: 0.h,
                 right: 10.w,
-                child: Row(
-                  children: [
-                    if (isOpen)
-                      InkWell(
-                        onTap: isLoading ? null : addToCart,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.green,
-                          radius: 10,
-                          child: isLoading
-                              ? const CircularProgressIndicator()
-                              : Icon(
-                                  size: 14,
-                                  Icons.add_shopping_cart_outlined,
-                                  color: AppColors.blue,
-                                ),
+                child: Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(50.r),
+                    border: Border.all(color: AppColors.grey, width: 0.2.w),
+                  ),
+                  child: Row(
+                    children: [
+                      if (isOpen)
+                        InkWell(
+                          onTap: isLoading ? null : addToCart,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.green,
+                            radius: 10,
+                            child: isLoading
+                                ? const CircularProgressIndicator()
+                                : Icon(
+                                    size: 14,
+                                    Icons.add_shopping_cart_outlined,
+                                    color: AppColors.blue,
+                                  ),
+                          ),
                         ),
-                      ),
-                    if (isOpen) SizedBox(width: 5.w),
-                    if (isOpen)
+                      if (isOpen) SizedBox(width: 5.w),
+                      if (isOpen)
+                        InkWell(
+                          onTap: isLoading
+                              ? null
+                              : () {
+                                  if (count > 0) {
+                                    count--;
+                                  }
+                                  if (count == 0) {
+                                    setState(() {
+                                      isOpen = false;
+                                    });
+                                  }
+                                },
+                          child: CircleAvatar(
+                            backgroundColor: AppColors.primaryColor,
+                            minRadius: 10.r,
+                            child: Icon(
+                              Icons.remove,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ),
+                      if (isOpen) SizedBox(width: 5.w),
+                      if (isOpen)
+                        Text(
+                          count.toString(),
+                          style: const TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      if (isOpen) SizedBox(width: 5.w),
                       InkWell(
                         onTap: isLoading
                             ? null
                             : () {
-                                if (count > 0) {
-                                  count--;
-                                }
-                                if (count == 0) {
+                                setState(() {
+                                  isOpen = true;
+                                });
+                                if (count < widget.model!.quantity!) {
                                   setState(() {
-                                    isOpen = false;
+                                    count++;
                                   });
                                 }
                               },
                         child: CircleAvatar(
                           backgroundColor: AppColors.primaryColor,
-                          minRadius: 10.r,
+                          minRadius: 10,
                           child: Icon(
-                            Icons.remove,
+                            Icons.add,
                             color: AppColors.white,
                           ),
                         ),
                       ),
-                    if (isOpen) SizedBox(width: 5.w),
-                    if (isOpen)
-                      Text(
-                        count.toString(),
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    if (isOpen) SizedBox(width: 5.w),
-                    InkWell(
-                      onTap: isLoading
-                          ? null
-                          : () {
-                              setState(() {
-                                isOpen = true;
-                              });
-                              if (count < widget.model!.quantity!) {
-                                setState(() {
-                                  count++;
-                                });
-                              }
-                            },
-                      child: CircleAvatar(
-                        backgroundColor: AppColors.primaryColor,
-                        minRadius: 10,
-                        child: Icon(
-                          Icons.add,
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               )
         ],
