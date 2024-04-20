@@ -491,7 +491,7 @@ class RouteGenerator {
             settings.arguments as Map<String, dynamic>;
 
         return PageTransition(
-          child: MapToSelectAnotherLocation(map: map),
+          child: MapToSelectAnotherLocation(map: map,amount: ''),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),

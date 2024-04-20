@@ -20,7 +20,7 @@ class CustomProduct extends StatefulWidget {
     this.model,
     this.cubit,
     required this.image,
-    this.height = 170,
+    this.height = 160,
     this.width = 135,
   }) : super(key: key);
   final String text1;
@@ -116,7 +116,7 @@ class _CustomProductState extends State<CustomProduct> {
             if (widget.model != null)
               Positioned(
                 bottom: 0.h,
-                right: 10.w,
+                right:70.w,
                 child: Container(
                   padding: EdgeInsets.all(2),
                   decoration: BoxDecoration(
@@ -127,20 +127,6 @@ class _CustomProductState extends State<CustomProduct> {
                   child: Row(
                     children: [
                       if (isOpen)
-                        InkWell(
-                          onTap: isLoading ? null : addToCart,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.green,
-                            radius: 10,
-                            child: isLoading
-                                ? const CircularProgressIndicator()
-                                : Icon(
-                                    size: 14,
-                                    Icons.add_shopping_cart_outlined,
-                                    color: AppColors.blue,
-                                  ),
-                          ),
-                        ),
                       if (isOpen) SizedBox(width: 5.w),
                       if (isOpen)
                         InkWell(
@@ -149,6 +135,7 @@ class _CustomProductState extends State<CustomProduct> {
                               : () {
                                   if (count > 0) {
                                     count--;
+                                    addToCart();
                                   }
                                   if (count == 0) {
                                     setState(() {
@@ -184,6 +171,8 @@ class _CustomProductState extends State<CustomProduct> {
                                 if (count < widget.model!.quantity!) {
                                   setState(() {
                                     count++;
+                                    addToCart();
+
                                   });
                                 }
                               },

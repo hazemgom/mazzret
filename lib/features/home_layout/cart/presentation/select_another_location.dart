@@ -22,10 +22,12 @@ import 'package:mozart_flutter_app/utils/styles/fonts.dart';
 
 class MapToSelectAnotherLocation extends StatefulWidget {
   Map<String, dynamic> map;
+  final String amount;
 
   MapToSelectAnotherLocation({
     Key? key,
     required this.map,
+    required this.amount,
   }) : super(key: key);
 
   @override
@@ -263,7 +265,7 @@ class _MapToSelectAnotherLocationState
                         FadePageRoute(
                           builder: (context) => PreviousAdress(
                             address: _currentAddress,
-                            amount: '',
+                            amount: widget.amount,
                           ),
                         ),
                       );

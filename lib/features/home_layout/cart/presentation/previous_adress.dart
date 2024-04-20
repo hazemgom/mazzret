@@ -15,16 +15,19 @@ import 'package:mozart_flutter_app/utils/custom_widgets/custom_stackbar.dart';
 import 'package:mozart_flutter_app/utils/styles/colors.dart';
 import 'package:mozart_flutter_app/utils/styles/fonts.dart';
 
+import '../../home_layout_screen.dart';
+
 class PreviousAdress extends StatefulWidget {
   // int? totalPrice;
   String? address;
   String? amount;
 
-  PreviousAdress({
-    Key? key,
-    // required this.totalPrice,
-    required this.address, required this.amount
-  }) : super(key: key);
+  PreviousAdress(
+      {Key? key,
+      // required this.totalPrice,
+      required this.address,
+      required this.amount})
+      : super(key: key);
 
   @override
   State<PreviousAdress> createState() => _PreviousAdressState();
@@ -264,31 +267,45 @@ class _PreviousAdressState extends State<PreviousAdress> {
                               messageColor: Colors.orangeAccent,
                             );
                           } else {
-print('ammmmmmmmmmmmmmmmount ${widget.amount}');
-                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                            print('ammmmmmmmmmmmmmmmount ${widget.amount}');
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
                               return Scaffold(
                                 appBar: AppBar(),
                                 body: MoamalatPayment(
-                                  isTest:
-                                  true,
+                                  isTest: true,
                                   merchantId: "10081014649",
                                   merchantReference: "PS_Merchant",
                                   terminalId: "99179395",
-                                  amount:'92000',
+                                  amount: widget.amount!,
                                   merchantSecretKey:
-                                  "39636630633731362D663963322D346362642D386531662D633963303432353936373431", //put your merchantSecretKey
+                                      "39636630633731362D663963322D346362642D386531662D633963303432353936373431",
+                                  //put your merchantSecretKey
 
                                   onCompleteSucsses: (value) {
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return HomeLayoutScreen();
+                                        },
+                                      ),
+                                      (route) => false,
+                                    );
                                     print(value.displayData.toString());
-                                    cartCubit.addOrderFunction(
-                                      cartId: id,
-                                      branchId: cartCubit.addressDataModel.branchId!,
+                                  },
+                                  onError: (error) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          content: Text(error.toString()),
+                                        );
+                                      },
                                     );
                                   },
-                                  onError: (error) {},
                                 ),
                               );
-
                             }));
                           }
 
