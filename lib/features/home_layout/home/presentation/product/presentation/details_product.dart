@@ -533,8 +533,8 @@ class _DetailsProductState extends State<DetailsProduct> {
                                               imageFile,
                                               homeCubit.specificProductModel!
                                                   .data!.title!,
-                                              homeCubit.specificProductModel!
-                                                  .data!.sId!,
+                                              homeCubit.specificProductModel!.data!.sId!,
+                                              homeCubit.specificProductModel!.data!.titleAr!,
                                             );
                                           }
                                         },

@@ -306,7 +306,11 @@ class HomeCubit extends Cubit<HomeState> {
     File image,
     String nameOfProduct,
     String productId,
+    String namofar,
   ) async {
+    print('iddddddddddddddddddddd $productId');
+    print('iddddddddddddddddddddd $namofar');
+    print('iddddddddddddddddddddd $nameOfProduct');
     emit(UploadImageToAdminLoadingState());
     print('*************');
     print('++++++++++++++++++++');
@@ -319,6 +323,7 @@ class HomeCubit extends Cubit<HomeState> {
       ),
       'nameOfProduct': nameOfProduct,
       'productId': productId,
+      'nameOfProductAr':namofar
     });
     print('llllllllllllllllllllll');
     print(image.path);
@@ -327,10 +332,10 @@ class HomeCubit extends Cubit<HomeState> {
         'authorization': "Bearer ${MyCache.getString(key: CacheKeys.token)}",
       },
     );
-    print('aaaaaaaaaaaaaaaaaaa');
+
     await Dio()
         .post(
-      'https://mozart-application.onrender.com/api/v1/uploadImage/${MyCache.getString(key: CacheKeys.userId)}',
+      'https://onlinestore-xors.onrender.com/api/v1/uploadImage/UploadImage',
       data: formData,
       options: options,
     )
