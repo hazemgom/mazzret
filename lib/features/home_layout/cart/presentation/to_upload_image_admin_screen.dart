@@ -134,9 +134,9 @@ class _UploadImageToAdminScreenState extends State<UploadImageToAdminScreen> {
 
                         homeCubit.uploadImageToServer(
                           imageFile,
-                          homeCubit
-                              .specificProductModel!.data!.title!,
+                          homeCubit.specificProductModel!.data!.title!,
                           homeCubit.specificProductModel!.data!.sId!,
+                          homeCubit.specificProductModel!.data!.titleAr!,
                         );
                       }
                     },
