@@ -39,13 +39,18 @@ class MozartApp extends StatelessWidget {
             BlocProvider(
               create: (context) => AuthCubit(),
             ),
+            BlocProvider(
+              create: (context) => ProfileCubit()
+                ..getProfileData()
+                ..getOrdersFunction()
+                ..getAllReviews(),
+            ),
 
             /// User
             BlocProvider(
               create: (context) => HomeCubit()
                 ..getBanners()
                 ..getCategory()
-
                 ..getCategoryList()
                 ..getProductInHighSold()
                 ..getAllProductsFunction(),
@@ -58,12 +63,6 @@ class MozartApp extends StatelessWidget {
                 ),
             BlocProvider(
               create: (context) => WishlistCubit()..getWishListFunction(),
-            ),
-            BlocProvider(
-              create: (context) => ProfileCubit()
-                ..getProfileData()
-                ..getOrdersFunction()
-                ..getAllReviews(),
             ),
 
             /// Admin
@@ -90,32 +89,39 @@ class MozartApp extends StatelessWidget {
                   GetAllFeedbacksCubit()..getAllFeedBackFunction(),
             ),
           ],
-          child: MaterialApp(
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [
-              Locale('en'),
-              Locale('ar'),
-            ],
-            locale: MyCache.getString(key: CacheKeys.lang) == null ||
-                    MyCache.getString(key: CacheKeys.lang) == ''
-                ? Locale('ar')
-                : Locale(MyCache.getString(key: CacheKeys.lang) ?? 'ar'),
-            debugShowCheckedModeBanner: false,
-            title: 'Mozart Application',
-            // home: SplashScreen(),
-            theme: ThemeData(
-                // colorScheme: ColorScheme.fromSwatch(
-                //   accentColor: AppColors.primaryColor.withOpacity(0.4),
-                // ),
-                ),
-            onGenerateRoute: RouteGenerator.getRoute,
-            initialRoute: RouteName.splashRoute,
-            // home: LocationDetailsScreen(),
+          child: BlocConsumer<ProfileCubit, ProfileState>(
+            listener: (context, state) {
+              // TODO: implement listener
+            },
+            builder: (context, state) {
+              return MaterialApp(
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('en'),
+                  Locale('ar'),
+                ],
+                locale: MyCache.getString(key: CacheKeys.lang) == null ||
+                        MyCache.getString(key: CacheKeys.lang) == ''
+                    ? Locale('ar')
+                    : Locale(MyCache.getString(key: CacheKeys.lang) ?? 'ar'),
+                debugShowCheckedModeBanner: false,
+                title: 'Mozart Application',
+                // home: SplashScreen(),
+                theme: ThemeData(
+                    // colorScheme: ColorScheme.fromSwatch(
+                    //   accentColor: AppColors.primaryColor.withOpacity(0.4),
+                    // ),
+                    ),
+                onGenerateRoute: RouteGenerator.getRoute,
+                initialRoute: RouteName.splashRoute,
+                // home: LocationDetailsScreen(),
+              );
+            },
           ),
         );
       },

@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mozart_flutter_app/features/admin/sql_connection/data/data_provider/local/cach_keys.dart';
+import 'package:mozart_flutter_app/features/admin/sql_connection/data/data_provider/local/cache.dart';
+import 'package:mozart_flutter_app/main.dart';
 import 'package:mozart_flutter_app/utils/styles/colors.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -10,13 +13,20 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../managers/auth_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'login_screen.dart';
+
 class OtpScreen extends StatelessWidget {
-  OtpScreen({required this.email,required this.phoneNumber});
+  OtpScreen({
+    required this.email,
+    required this.phoneNumber,
+    required this.selectedOption,
+  });
+
   TextEditingController pinEditingController = TextEditingController(text: '');
 
   String? email;
+  String? selectedOption;
   String? phoneNumber;
-  int ?otpInt;
+  int? otpInt;
 
   @override
   Widget build(BuildContext context) {
@@ -27,20 +37,20 @@ class OtpScreen extends StatelessWidget {
           if (state is VerifyOTPSuccessState) {
             showTopSnackBar(
               Overlay.of(context),
-              CustomSnackBar.success(
+              const CustomSnackBar.success(
                 message: 'verify success',
               ),
             );
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => SignInScreen()),
-                  (route) => false,
+              MaterialPageRoute(builder: (context) => const SignInScreen()),
+              (route) => false,
             );
           }
           if (state is VerifyOTPErrorState) {
             showTopSnackBar(
               Overlay.of(context),
-              CustomSnackBar.error(
+              const CustomSnackBar.error(
                 message: 'Enter correct Otp OR Check Your Number if it correct',
               ),
             );
@@ -51,7 +61,6 @@ class OtpScreen extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.primaryColor,
-
               title: Text(
                 AppLocalizations.of(context)!.verify,
                 style: GoogleFonts.poppins(
@@ -64,20 +73,28 @@ class OtpScreen extends StatelessWidget {
             body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Check Sms in Number:${phoneNumber}',
-                        style: GoogleFonts.tajawal(fontSize: 20, fontWeight: FontWeight.w700),),
-                    ],
+                  (selectedOption == 'phone')
+                      ? Text(
+                        'Check your phone for OTP',
+                        style: GoogleFonts.tajawal(
+                            fontSize: 20, fontWeight: FontWeight.w700),
+                      )
+                      : Text(
+                        'Check your email for OTP',
+                        style: GoogleFonts.tajawal(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                  SizedBox(
+                    height: 20,
                   ),
-                  const SizedBox(height: 250,),
                   Directionality(
                     textDirection: TextDirection.ltr,
-                    child:PinCodeTextField(
+                    child: PinCodeTextField(
                       appContext: context,
                       length: 4,
                       controller: pinEditingController,
@@ -96,9 +113,11 @@ class OtpScreen extends StatelessWidget {
                         shape: PinCodeFieldShape.box,
                         borderRadius: BorderRadius.circular(8),
                         fieldHeight: 50,
-                        fieldWidth: 60, // Adjust width here
+                        fieldWidth: 60,
+                        // Adjust width here
                         activeFillColor: Colors.white,
-                        inactiveFillColor: Colors.white, // Set color if no number is entered
+                        inactiveFillColor:
+                            Colors.white, // Set color if no number is entered
                       ),
                       cursorColor: Colors.green,
                       animationDuration: const Duration(milliseconds: 300),
@@ -108,9 +127,7 @@ class OtpScreen extends StatelessWidget {
                         otpInt = int.tryParse(value);
                       },
                     ),
-
                   ),
-
                 ],
               ),
             ),
@@ -120,4 +137,3 @@ class OtpScreen extends StatelessWidget {
     );
   }
 }
-

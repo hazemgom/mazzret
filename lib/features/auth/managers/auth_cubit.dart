@@ -12,6 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_state.dart';
 
+
+
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitialState());
 
@@ -118,31 +120,32 @@ class AuthCubit extends Cubit<AuthState> {
     required String method,
   }) async {
     emit(SignupLoadingState());
-    await dioHelper.postData(
-      endPoint: AppConstants.singUpUrl,
-      body: {
-        "name": name,
-        "email": email,
-        "password": password,
-        "passwordConfirm": passwordConfirm,
-        "phone": phone,
-        // "street": streetName,
-        // "apartment": apartment,
-        // "zip": zipCode,
-        // "city": city,
-        // "country": country,
-        "lat": lat,
-        "lng": lng,
-        "address": address,
-        "role": role,
-        "confirmMethod": method
-      },
-    ).then((response) {
+    try {
+      await dioHelper.postData(
+        endPoint: AppConstants.singUpUrl,
+        body: {
+          "name": name,
+          "email": email,
+          "password": password,
+          "passwordConfirm": passwordConfirm,
+          "phone": phone,
+          // "street": streetName,
+          // "apartment": apartment,
+          // "zip": zipCode,
+          // "city": city,
+          // "country": country,
+          "lat": lat,
+          "lng": lng,
+          "address": address,
+          "role": role,
+          "confirmMethod": method
+        },
+      );
       emit(SignupSuccessState());
-    }).catchError((error) {
-      print('Sing Up error is $error');
+    } on DioException catch (e) {
+      print('Sing Up error is ${e.response!.data}');
       emit(SignupErrorState());
-    });
+    }
   }
 
   void getPlaceAndPosition() {

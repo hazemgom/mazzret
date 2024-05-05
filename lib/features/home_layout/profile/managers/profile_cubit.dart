@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mozart_flutter_app/features/auth/data/data_provider/local/cach_keys.dart';
@@ -8,6 +9,7 @@ import 'package:mozart_flutter_app/features/home_layout/profile/data/models/my_r
 import 'package:mozart_flutter_app/features/home_layout/profile/data/models/order_model.dart';
 import 'package:mozart_flutter_app/features/home_layout/profile/data/models/profile_model.dart';
 import 'package:mozart_flutter_app/features/home_layout/profile/data/models/specific_order_model.dart';
+import 'package:mozart_flutter_app/main.dart';
 import 'package:mozart_flutter_app/utils/constants/constants.dart';
 
 part 'profile_state.dart';
@@ -26,16 +28,24 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   /// Get All Profile Data
   Future<void> getProfileData() async {
-    emit(GetProfileDataLoadingState());
-    await dioHelper
-        .getData(endPoint: AppConstants.getProfileDataUrl)
-        .then((response) {
+    try {
+      var dio = Dio();
+      Response response = await dio.request(
+        '${AppConstants.baseUrl}${AppConstants.getProfileDataUrl}',
+        options: Options(
+          method: 'GET',
+          headers: {
+            "authorization": "Bearer ${pref.getString('token')}",
+          },
+        ),
+      );
       profileDataModel = ProfileDataModel.fromJson(response.data);
+      print('*********************************${response.data}');
       emit(GetProfileDataSuccessState());
-    }).catchError((error) {
-      print('Get profile error in $error');
+    } on DioException catch (e) {
+      print('Get profile error in ${e.response}');
       emit(GetProfileDataErrorState());
-    });
+    }
   }
 
   // void sortOrdersByDate() {
@@ -70,7 +80,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     await dioHelper
         .getData(endPoint: '${AppConstants.addOrderUrl}$orderId')
         .then((response) {
-          print(response.data);
+      print(response.data);
       specificOrderModel = SpecificOrderModel.fromJson(response.data);
       emit(GetSpecificOrderSuccessState());
     }).catchError((error) {
@@ -84,12 +94,14 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(GetAllReviewsLoadingState());
     print('imad');
     try {
-      final response = await dioHelper.getData(endPoint: AppConstants.getReviewsUrl);
+      final response =
+          await dioHelper.getData(endPoint: AppConstants.getReviewsUrl);
       print(response.data);
       myReviewsModel = MyReviewsModel.fromJson(response.data);
 
       if (myReviewsModel != null) {
-        myReviewsModel!.data!.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+        myReviewsModel!.data!
+            .sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       }
 
       emit(GetAllReviewsSuccessState());

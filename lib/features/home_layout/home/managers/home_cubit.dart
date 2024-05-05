@@ -16,6 +16,7 @@ import 'package:mozart_flutter_app/features/home_layout/home/data/models/product
 import 'package:mozart_flutter_app/features/home_layout/home/data/models/specific_banner_model.dart';
 import 'package:mozart_flutter_app/features/home_layout/home/data/models/specific_category.dart';
 import 'package:mozart_flutter_app/features/home_layout/home/data/models/specific_product_model.dart';
+import 'package:mozart_flutter_app/main.dart';
 import 'package:mozart_flutter_app/utils/constants/constants.dart';
 import 'package:http/http.dart' as http;
 import '../../../../core/dio-helper.dart';
@@ -169,6 +170,7 @@ class HomeCubit extends Cubit<HomeState> {
         productModel!.data
             ?.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       }
+      print('******************************');
       emit(GetAllCategoriesSuccessState());
     }).catchError((error) {
       print('Get All Products error is $error');
@@ -323,7 +325,7 @@ class HomeCubit extends Cubit<HomeState> {
       ),
       'nameOfProduct': nameOfProduct,
       'productId': productId,
-      'nameOfProductAr':namofar
+      'nameOfProductAr': namofar
     });
     print('llllllllllllllllllllll');
     print(image.path);
@@ -422,11 +424,12 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       Dio dio = Dio();
       dio.options.headers['Authorization'] =
-          'Bearer ${MyCache.getString(key: CacheKeys.token)}';
+          'Bearer ${pref.get('token')}';
       Response response = await dio
           .get('https://onlinestore-xors.onrender.com/api/v1/products');
       print(response.toString());
       print(MyCache.getString(key: CacheKeys.token));
+      print('bannnnnnnnnnnnnners${response.data}');
       productModel2 = ProductModel.fromJson(response.data);
       emit(GetBannersSuccessState());
       return response;

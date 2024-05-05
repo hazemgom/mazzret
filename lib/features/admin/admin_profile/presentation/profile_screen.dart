@@ -11,6 +11,7 @@ import 'package:mozart_flutter_app/features/home_layout/profile/managers/profile
 import 'package:mozart_flutter_app/features/home_layout/profile/presentation/widget/custom_container_profile.dart';
 import 'package:mozart_flutter_app/features/home_layout/profile/presentation/widget/show_language_bottom_shet.dart';
 import 'package:mozart_flutter_app/features/home_layout/profile/presentation/widget/show_tell_us_about_your_experience_bottom_shet.dart';
+import 'package:mozart_flutter_app/main.dart';
 import 'package:mozart_flutter_app/utils/custom_widgets/custom_back_for_app.dart';
 import 'package:mozart_flutter_app/utils/styles/colors.dart';
 import 'package:mozart_flutter_app/utils/styles/fonts.dart';
@@ -130,8 +131,9 @@ class _ProfileScreenState extends State<AdminProfileScreen> {
                             text: AppLocalizations.of(context)!
                                 .doyouwanttologout,
                             onPressed: () {
-                              MyCache.removeFromShared(
-                                  key: CacheKeys.token);
+                              MyCache.clearShared();
+                              MyCache.removeFromShared(key: CacheKeys.token);
+                              pref.clear();
                               Navigator.pushReplacementNamed(
                                 context,
                                 RouteName.loginRoute,

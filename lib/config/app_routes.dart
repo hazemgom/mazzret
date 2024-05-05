@@ -77,21 +77,21 @@ class RouteGenerator {
     switch (settings.name) {
       case RouteName.splashRoute:
         return PageTransition(
-          child: SplashScreen(),
+          child: const SplashScreen(),
           type: PageTransitionType.rightToLeft,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.loginRoute:
         return PageTransition(
-          child: SignInScreen(),
+          child: const SignInScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.checkPhoneOrEmailRoute:
         return PageTransition(
-          child: CheckPhoneOrEmail(),
+          child: const CheckPhoneOrEmail(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -136,56 +136,56 @@ class RouteGenerator {
         );
       case RouteName.registerRoute:
         return PageTransition(
-          child: RegisterScreen(),
+          child:  RegisterScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.checkLanguageRoute:
         return PageTransition(
-          child: CheckLangugeScreen(),
+          child: const CheckLangugeScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.homeLayoutRoute:
         return PageTransition(
-          child: HomeLayoutScreen(),
+          child: const HomeLayoutScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.userNormalRoute:
         return PageTransition(
-          child: UserNormalScreen(),
+          child: const UserNormalScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.userWholesaleRoute:
         return PageTransition(
-          child: UserWholesaleScreen(),
+          child: const UserWholesaleScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.homeRoute:
         return PageTransition(
-          child: HomeScreen(),
+          child: const HomeScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.getMyReviewsRoute:
         return PageTransition(
-          child: MyReviews(),
+          child: const MyReviews(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.detailsProductRoute:
         return PageTransition(
-          child: DetailsProduct(),
+          child: const DetailsProduct(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -208,7 +208,7 @@ class RouteGenerator {
         );
       case RouteName.allMyAddressesRoute:
         return PageTransition(
-          child: AllMyAddressesScreen(),
+          child: const AllMyAddressesScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -231,21 +231,21 @@ class RouteGenerator {
         );
       case RouteName.categoryRoute:
         return PageTransition(
-          child: CategoryScreen(),
+          child: const CategoryScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.getCategoriesRoute:
         return PageTransition(
-          child: GetCategoriesScreen(),
+          child: const GetCategoriesScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.getAllProductsRoute:
         return PageTransition(
-          child: GetProductsScreen(),
+          child: const GetProductsScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -273,14 +273,14 @@ class RouteGenerator {
         );
       case RouteName.myAccountRoute:
         return PageTransition(
-          child: MyAccount(),
+          child:  MyAccount(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.myOrderRoute:
         return PageTransition(
-          child: MyOrderScreen(),
+          child: const MyOrderScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -297,21 +297,21 @@ class RouteGenerator {
         );
       case RouteName.washlistRoute:
         return PageTransition(
-          child: WashListScreen(),
+          child: const WashListScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.allAddressesInProfileRoute:
         return PageTransition(
-          child: AllAddressesInProfileScreen(),
+          child: const AllAddressesInProfileScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.programmerRoute:
         return PageTransition(
-          child: ProgrammerScreen(),
+          child: const ProgrammerScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -339,7 +339,7 @@ class RouteGenerator {
         );
       case RouteName.followOrderRoute:
         return PageTransition(
-          child: FollowOrder(),
+          child: const FollowOrder(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -368,28 +368,28 @@ class RouteGenerator {
       /// Admin
       case RouteName.adminHomeLayoutRoute:
         return PageTransition(
-          child: AdminHomeLayout(),
+          child: const AdminHomeLayout(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.adminHome:
         return PageTransition(
-          child: AdminHomeScreen(),
+          child: const AdminHomeScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.getAllProduct:
         return PageTransition(
-          child: AdminGetAllProduct(),
+          child: const AdminGetAllProduct(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.admindetaisproduct:
         return PageTransition(
-          child: DetailsProduct(),
+          child: const DetailsProduct(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -407,7 +407,7 @@ class RouteGenerator {
         );
       case RouteName.getAllUser:
         return PageTransition(
-          child: GetAllUser(),
+          child: const GetAllUser(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -426,7 +426,7 @@ class RouteGenerator {
         );
       case RouteName.adminGetAllCategories:
         return PageTransition(
-          child: AdminGetAllCategories(),
+          child: const AdminGetAllCategories(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -442,7 +442,7 @@ class RouteGenerator {
         );
       case RouteName.addNewBanner:
         return PageTransition(
-          child: AdminAddNewBanner(),
+          child: const AdminAddNewBanner(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -474,7 +474,7 @@ class RouteGenerator {
         );
       case RouteName.mapToSearchRoute:
         return PageTransition(
-          child: AdminMapToSearch(),
+          child: const AdminMapToSearch(path: 'AddNewUser'),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -501,28 +501,28 @@ class RouteGenerator {
         );
       case RouteName.userNormalOrdersRoute:
         return PageTransition(
-          child: GetAllOrdersInUserNormalInManager(),
+          child: const GetAllOrdersInUserNormalInManager(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.userNormalOrdersRouteAdmin:
         return PageTransition(
-          child: GetAllOrdersInUserNormalInAdmin(),
+          child: const GetAllOrdersInUserNormalInAdmin(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.userWholesaleOrdersRoute:
         return PageTransition(
-          child: GetAllOrdersInUserWholesaleInManager(),
+          child: const GetAllOrdersInUserWholesaleInManager(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
         );
       case RouteName.userWholesaleOrdersRouteAdmin:
         return PageTransition(
-          child: GetAllOrdersInUserWholesaleInAdmin(),
+          child: const GetAllOrdersInUserWholesaleInAdmin(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -594,7 +594,7 @@ class RouteGenerator {
         );
       case RouteName.getAllAdress:
         return PageTransition(
-          child: AdminGetAllAddress(),
+          child: const AdminGetAllAddress(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -608,7 +608,7 @@ class RouteGenerator {
         );
       case RouteName.detailsCoupons:
         return PageTransition(
-          child: DetailsCouponsScreen(),
+          child: const DetailsCouponsScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),
@@ -650,7 +650,7 @@ class RouteGenerator {
         );
       case RouteName.sqlConnection:
         return PageTransition(
-          child: SqlConnectionScreen(),
+          child: const SqlConnectionScreen(),
           type: PageTransitionType.fade,
           settings: settings,
           reverseDuration: const Duration(milliseconds: 250),

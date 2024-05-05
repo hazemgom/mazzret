@@ -19,6 +19,8 @@ import 'package:mozart_flutter_app/utils/styles/colors.dart';
 import 'package:mozart_flutter_app/utils/styles/fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../../main.dart';
+
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key? key}) : super(key: key);
 
@@ -87,15 +89,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 Text(
-                  profileCubit.profileDataModel == null
-                      ? ''
-                      : profileCubit.profileDataModel!.data!.name!,
+                  MyCache.getString(key: CacheKeys.fullName).toString(),
                   style: GoogleFonts.cairo(fontSize: 18.sp, height: 2.h),
                 ),
                 Text(
-                  profileCubit.profileDataModel == null
-                      ? ''
-                      : profileCubit.profileDataModel!.data!.email!,
+                  MyCache.getString(key: CacheKeys.email).toString(),
                   style: AppFonts.bodyText.copyWith(fontSize: 15.sp),
                 ),
                 SizedBox(
@@ -136,6 +134,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   .doyouwanttologout,
                               onPressed: () {
                                 MyCache.clearShared();
+                                MyCache.removeFromShared(key: CacheKeys.token);
+                                pref!.clear();
                                 Navigator.pushReplacementNamed(
                                   context,
                                   RouteName.loginRoute,

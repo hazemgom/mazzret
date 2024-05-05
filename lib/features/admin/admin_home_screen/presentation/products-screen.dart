@@ -67,7 +67,8 @@ class ProductsScreen extends StatelessWidget {
                           children: [
                             CustomProduct(
                               width: 180.w,
-                              image: product.image!.url!,
+                              isBanner: false,
+                              image: product.image!.url ??'',
                               text1: product.title!,
                               text2: '',
                             ),

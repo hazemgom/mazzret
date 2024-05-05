@@ -16,7 +16,6 @@ dependencies:
 
   # Check The Internet
   connectivity: ^3.0.6
-
   country_picker: ^2.0.22
   pin_code_fields: ^8.0.1
 

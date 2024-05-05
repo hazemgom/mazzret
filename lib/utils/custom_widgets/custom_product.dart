@@ -22,13 +22,15 @@ class CustomProduct extends StatefulWidget {
     required this.text2,
     this.model,
     this.cubit,
+    this.isBanner = true,
     required this.image,
-    this.height = 160,
+    this.height =159,
     this.width = 135,
   }) : super(key: key);
   final String text1;
   final String text2;
   final String image;
+  final bool isBanner;
   final double height;
   final double width;
   final ProductData? model;
@@ -56,10 +58,6 @@ class _CustomProductState extends State<CustomProduct> {
     });
   }
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -79,54 +77,54 @@ class _CustomProductState extends State<CustomProduct> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                 InkWell(
-                   onTap: () {
-                     Navigator.push(
-                       context,
-                       FadePageRoute(
-                         builder: (context) => DetailsProduct(
-                           productId: widget.model!.id!,
-                         ),
-                       ),
-                     );
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        FadePageRoute(
+                          builder: (context) => DetailsProduct(
+                            productId: widget.model!.id!,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Column(children: [
+                      CachedImage(
+                        link: widget.image,
+                        borderRadius: 14.r,
+                        width: 99.w,
+                        height: 75.h,
+                        fit: BoxFit.cover,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.text1,
+                              style: AppFonts.black2Text,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          if (widget.isBanner)
+                            SizedBox(
+                              width: 130.w,
+                              child: Text(
+                                widget.text2,
 
-                   },
-                   child: Column(
-                     children: [
-                       CachedImage(
-                         link: widget.image,
-                         borderRadius: 14.r,
-                         width: 99.w,
-                         height: 75.h,
-                         fit: BoxFit.cover,
-                       ),
-                       Row(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         children: [
-                           Expanded(
-                             child: Text(
-                               widget.text1,
-                               style: AppFonts.black2Text,
-                               overflow: TextOverflow.ellipsis,
-                             ),
-                           ),
-                         ],
-                       ),
-                       Row(
-                         children: [
-                           SizedBox(
-                             width: 130.w,
-                             child: Text(
-                               widget.text2,
-                               style: AppFonts.descInWishList,
-                               overflow: TextOverflow.ellipsis,
-                             ),
-                           ),
-                         ],
-                       ),
-                     ]
-                   ),
-                 )
+                                style: AppFonts.descInWishList,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                        ],
+                      ),
+                      SizedBox(height: 5.h),
+                    ]),
+                  )
                 ],
               ),
             ),
@@ -135,11 +133,10 @@ class _CustomProductState extends State<CustomProduct> {
               pref.getString('role') == 'user-wholesale')
             if (widget.model != null)
               Positioned(
-                bottom: 14.h,
-                right:50.w,
+                bottom: 10.h,
+                right: widget.width / 2 - 25.w,
                 child: Container(
                   height: 35,
-
                   padding: EdgeInsets.all(2),
                   decoration: BoxDecoration(
                     color: Colors.grey.shade200,
@@ -149,7 +146,7 @@ class _CustomProductState extends State<CustomProduct> {
                   child: Row(
                     children: [
                       if (isOpen)
-                      if (isOpen) SizedBox(width: 5.w),
+                        if (isOpen) SizedBox(width: 5.w),
                       if (isOpen)
                         InkWell(
                           onTap: isLoading
@@ -180,9 +177,7 @@ class _CustomProductState extends State<CustomProduct> {
                         Text(
                           count.toString(),
                           style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 18
-                          ),
+                              color: Colors.black, fontSize: 18),
                         ),
                       if (isOpen) SizedBox(width: 5.w),
                       InkWell(
@@ -196,7 +191,6 @@ class _CustomProductState extends State<CustomProduct> {
                                   setState(() {
                                     count++;
                                     addToCart();
-
                                   });
                                 }
                               },

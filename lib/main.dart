@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/dio-helper.dart';
+import 'package:intl/intl.dart';
 
 late SharedPreferences pref;
 
@@ -23,6 +24,9 @@ Future<void> init() async {
   }
 }
 
+bool isArabic() {
+  return Intl.getCurrentLocale() == 'ar';
+}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();

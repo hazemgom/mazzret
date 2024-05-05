@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mozart_flutter_app/config/app_assets.dart';
 import 'package:mozart_flutter_app/config/app_routes.dart';
 import 'package:mozart_flutter_app/features/auth/data/data_provider/local/cach_keys.dart';
@@ -15,7 +16,6 @@ import 'package:mozart_flutter_app/utils/custom_widgets/custom_back_for_app.dart
 import 'package:mozart_flutter_app/utils/custom_widgets/custom_botton.dart';
 import 'package:mozart_flutter_app/utils/custom_widgets/custom_divider.dart';
 import 'package:mozart_flutter_app/utils/custom_widgets/custom_loading.dart';
-import 'package:mozart_flutter_app/utils/custom_widgets/custom_phone_text_field.dart';
 import 'package:mozart_flutter_app/utils/custom_widgets/custom_phone_widget.dart';
 import 'package:mozart_flutter_app/utils/custom_widgets/custom_stackbar.dart';
 import 'package:mozart_flutter_app/utils/custom_widgets/custom_text_form_filed.dart';
@@ -28,7 +28,47 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../test.dart';
 
 class RegisterScreen extends StatefulWidget {
-  RegisterScreen({Key? key}) : super(key: key);
+  RegisterScreen({
+    Key? key,
+    this.nameController,
+    this.emailController,
+    this.passwordController,
+    this.phoneNumberController,
+    this.codeController,
+    this.zipCodeController,
+    this.cityController,
+    this.countryController,
+    this.streetNameController,
+    this.apartmentController,
+    this.floorNumberController,
+    this.locationController,
+    this.position,
+  }) : super(key: key);
+
+  TextEditingController? nameController = TextEditingController();
+
+  TextEditingController? emailController = TextEditingController();
+
+  TextEditingController? passwordController = TextEditingController();
+
+  TextEditingController? phoneNumberController = TextEditingController();
+  LatLng? position;
+
+  TextEditingController? codeController = TextEditingController();
+
+  TextEditingController? zipCodeController = TextEditingController();
+
+  TextEditingController? cityController = TextEditingController();
+
+  TextEditingController? countryController = TextEditingController();
+
+  TextEditingController? streetNameController = TextEditingController();
+
+  TextEditingController? apartmentController = TextEditingController();
+
+  TextEditingController? floorNumberController = TextEditingController();
+
+  TextEditingController? locationController = TextEditingController();
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -38,68 +78,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool obscure = true;
-  static SharedPreferences? preferences;
 
   String phoneNumber = '';
   String countryCode = '';
   String _selectedOption = '';
+
+  var nameController = TextEditingController();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+  var phoneNumberController = TextEditingController();
+  var codeController = TextEditingController();
+  var zipCodeController = TextEditingController();
+  var cityController = TextEditingController();
+  var countryController = TextEditingController();
+  var streetNameController = TextEditingController();
+  var apartmentController = TextEditingController();
+  var floorNumberController = TextEditingController();
+  var locationController = TextEditingController();
 
   Country? country;
   String flag = AppAssets.lb;
 
   @override
   void initState() {
-    init().then((value) {
-      print(
-          '*************  ${preferences!.getString('myLocation')}  **************');
-      print(
-          '*************  ${preferences!.getString('myLocation')}  **************');
-    });
-    if (preferences != null) {
-      if (preferences!.getString('myLocation') !=
-          null) {
-        setState(() {
-          if(mounted){
-            AuthCubit.get(context).getPlaceAndPosition();
+    nameController = widget.nameController ?? nameController;
+    emailController = widget.emailController ?? emailController;
+    passwordController = widget.passwordController ?? passwordController;
+    phoneNumberController =
+        widget.phoneNumberController ?? phoneNumberController;
+    codeController = widget.codeController ?? codeController;
+    zipCodeController = widget.zipCodeController ?? zipCodeController;
+    cityController = widget.cityController ?? cityController;
+    countryController = widget.countryController ?? countryController;
+    streetNameController = widget.streetNameController ?? streetNameController;
+    apartmentController = widget.apartmentController ?? apartmentController;
+    floorNumberController =
+        widget.floorNumberController ?? floorNumberController;
+    locationController = widget.locationController ?? locationController;
 
-          }
-          locationController.text = preferences!.getString('myLocation')!;
-
-          preferences!.getString('myLocation');
-          print(preferences!
-              .getString('myLocation'));
-        });
-      }
-    }
     super.initState();
   }
-
-  static Future<void> init() async {
-    preferences = await SharedPreferences.getInstance();
-  }
-
-  final TextEditingController nameController = TextEditingController();
-
-  final TextEditingController emailController = TextEditingController();
-
-  final TextEditingController passwordController = TextEditingController();
-
-  final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController codeController = TextEditingController();
-
-  final TextEditingController zipCodeController = TextEditingController();
-
-  final TextEditingController cityController = TextEditingController();
-
-  final TextEditingController countryController = TextEditingController();
-
-  final TextEditingController streetNameController = TextEditingController();
-
-  final TextEditingController apartmentController = TextEditingController();
-
-  final TextEditingController floorNumberController = TextEditingController();
-
-  final TextEditingController locationController = TextEditingController();
 
   String? selectItem;
   String? newf;
@@ -139,12 +157,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
           listener: (context, state) {
             if (state is SignupSuccessState) {
               MyCache.removeFromShared(key: CacheKeys.myLocation);
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return OtpScreen(
-                    email: emailController.text,
-                    phoneNumber:
-                        codeController.text + phoneNumberController.text);
-              }));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return OtpScreen(
+                      email: emailController.text,
+                      phoneNumber:
+                          codeController.text + phoneNumberController.text,
+                      selectedOption: _selectedOption,
+                    );
+                  },
+                ),
+              );
               CustomSnackBar.showMessage(
                 context,
                 message: AppLocalizations.of(context)!.signupSuccess,
@@ -312,23 +337,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               },
                             ),
 
-
                             CustomTextFormFiled(
                               validator: (text) {},
-                              label: preferences == null && position == null
-                                  ? AppLocalizations.of(context)!
-                                      .clickthebuttonbelowtobringthecurrentlocationtoyou
-                                  : preferences!
-                                      .getString('myLocation')
-                                      .toString(),
+                              label: AppLocalizations.of(context)!
+                                  .clickthebuttonbelowtobringthecurrentlocationtoyou,
                               controller: locationController,
                               readOnly: true,
-                              hintText: preferences == null && position == null
-                                  ? AppLocalizations.of(context)!
-                                      .clickthebuttonbelowtobringthecurrentlocationtoyou
-                                  : preferences!
-                                      .getString('myLocation')
-                                      .toString(),
+                              hintText: AppLocalizations.of(context)!
+                                  .clickthebuttonbelowtobringthecurrentlocationtoyou,
                               suffixIcon: Padding(
                                 padding: EdgeInsets.all(12.sp),
                                 child: SvgPicture.asset(
@@ -345,11 +361,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return MapScreen();
+                                      return MapScreen(
+                                        apartmentController:
+                                            apartmentController,
+                                        cityController: cityController,
+                                        locationController: locationController,
+                                        phoneNumberController:
+                                            phoneNumberController,
+                                        codeController: codeController,
+                                        nameController: nameController,
+                                        emailController: emailController,
+                                        passwordController: passwordController,
+                                        countryController: countryController,
+                                        floorNumberController:
+                                            floorNumberController,
+                                        streetNameController:
+                                            streetNameController,
+                                        zipCodeController: zipCodeController,
+                                      );
                                     },
                                   ),
                                 );
-
                               },
                               color: AppColors.primaryColor,
                               borderRadius: 10.r,
@@ -358,7 +390,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               text: AppLocalizations.of(context)!.pressHere,
                             ),
                             SizedBox(height: 10.h),
-
 
                             Padding(
                               padding: EdgeInsets.symmetric(
@@ -448,7 +479,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         : CustomButtonWidget(
                             onPressed: () async {
                               if (formKey.currentState!.validate()) {
-                                if (position != null && address != null) {
+                                if (widget.position != null) {
                                   print(address);
                                   if (newf == null || newf == '') {
                                     CustomSnackBar.showMessage(
@@ -466,9 +497,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       passwordConfirm: passwordController.text,
                                       phone:
                                           '${codeController.text}${phoneNumberController.text}',
-                                      lat: position!.latitude,
-                                      lng: position!.longitude,
-                                      address: address!,
+                                      lat: widget.position!.latitude,
+                                      lng: widget.position!.longitude,
+                                      address: locationController.text,
                                       role: newf ==
                                               AppLocalizations.of(context)!
                                                   .retailclient

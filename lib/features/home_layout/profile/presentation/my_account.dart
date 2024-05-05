@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mozart_flutter_app/features/home_layout/profile/managers/profile_cubit.dart';
 import 'package:mozart_flutter_app/features/home_layout/profile/presentation/edit_profile_screen.dart';
 import 'package:mozart_flutter_app/features/home_layout/profile/presentation/widget/custom_container_my_account.dart';
@@ -11,7 +12,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../utils/styles/fonts.dart';
 
 class MyAccount extends StatelessWidget {
-  const MyAccount({Key? key}) : super(key: key);
+  MyAccount({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,30 +27,22 @@ class MyAccount extends StatelessWidget {
       // AppLocalizations.of(context)!.city,
       // AppLocalizations.of(context)!.country,
     ];
-    // List<String> name = [
-    //   "Amira Adel",
-    //   "amira@gmail.com",
-    //   "01061489546",
-    //   "*******",
-    //   "streetname",
-    //   "apartment",
-    //   "zipcountry",
-    //   "city",
-    //   "country",
-    // ];
-    return BlocBuilder<ProfileCubit, ProfileState>(
-      builder: (context, state) {
-        var profileCubit = ProfileCubit.get(context);
+    return BlocProvider(
+      create: (context) => ProfileCubit()..getProfileData(),
+      child: BlocBuilder<ProfileCubit, ProfileState>(
+        builder: (context, state) {
+          var profileCubit = ProfileCubit.get(context);
 
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.primaryColor,
-            title: Text(
-              AppLocalizations.of(context)!.myaccount,
-              style: AppFonts.titleScreen.copyWith(height: 0),
-            ),
-            centerTitle: true,
-            // actions: [
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: AppColors.primaryColor,
+              elevation: 0,
+              title: Text(
+                AppLocalizations.of(context)!.myaccount,
+                style: AppFonts.titleScreen.copyWith(height: 0),
+              ),
+              centerTitle: true,
+              // actions: [
               // IconButton(
               //     onPressed: () {
               //       Navigator.push(
@@ -84,64 +77,242 @@ class MyAccount extends StatelessWidget {
               //       //     name: name[0], email: name[1], phone: name[2], password: name[3], city: name[4], country: name[5], apartment: name[6], streetname: name[7], zipcode: name[8],),),);
               //     },
               //     icon: const Icon(Icons.edit_outlined))
-            // ],
-          ),
-          // body: ListView.builder(
-          //   itemCount: title.length,
-          //     itemBuilder: (context,index ){
-          //       return CustomContainerMyAccount(titleText: title[index], name: name[index]);
-          //     }
-          //
-          // )
-          body: profileCubit.profileDataModel == null ||
-              profileCubit.profileDataModel!.data == null
-              ? const Center(
-            child: CustomLoading(),
-          )
-              : SingleChildScrollView(
-            child: Column(
-              children: [
-                CustomContainerMyAccount(
-                  titleText: title[0],
-                  name: profileCubit.profileDataModel!.data!.name!,
-                ),
-                CustomContainerMyAccount(
-                  titleText: title[1],
-                  name: profileCubit.profileDataModel!.data!.email!,
-                ),
-                CustomContainerMyAccount(
-                  titleText: title[2],
-                  name: '*******',
-                ),
-                CustomContainerMyAccount(
-                  titleText: title[3],
-                  name: profileCubit.profileDataModel!.data!.phone!,
-                ),
-                CustomContainerMyAccount(
-                  titleText: title[4],
-                  name: profileCubit.profileDataModel!.data!.lat!.toString(),
-                ),
-                CustomContainerMyAccount(
-                  titleText: title[5],
-                  name: profileCubit.profileDataModel!.data!.lng!.toString(),
-                ),
-                CustomContainerMyAccount(
-                  titleText: title[6],
-                  name: profileCubit.profileDataModel!.data!.address!,
-                ),
-                // CustomContainerMyAccount(
-                //   titleText: title[7],
-                //   name: profileCubit.profileDataModel!.data!.city!,
-                // ),
-                // CustomContainerMyAccount(
-                //   titleText: title[8],
-                //   name: profileCubit.profileDataModel!.data!.country!,
-                // ),
-              ],
+              // ],
             ),
-          ),
-        );
-      },
+            body: profileCubit.profileDataModel == null
+                ? const Center(
+                    child: CustomLoading(),
+                  )
+                : SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title[1],
+                            style: GoogleFonts.cairo(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.grey,
+                            ),
+                          ),
+                          Container(
+                            height: 48,
+                            decoration: BoxDecoration(
+                                color: const Color.fromRGBO(242, 242, 242, 1),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  hintText: profileCubit
+                                      .profileDataModel!.data!.email!,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  suffixIcon: const Icon(Icons.email),
+                                  disabledBorder: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          Text(
+                            title[0],
+                            style: GoogleFonts.cairo(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.grey,
+                            ),
+                          ),
+                          Container(
+                            height: 48,
+                            decoration: BoxDecoration(
+                                color: const Color.fromRGBO(242, 242, 242, 1),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  hintText: profileCubit
+                                      .profileDataModel!.data!.name!,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  suffixIcon: const Icon(Icons.person),
+                                  disabledBorder: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          Text(
+                            title[2],
+                            style: GoogleFonts.cairo(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.grey,
+                            ),
+                          ),
+                          Container(
+                            height: 48,
+                            decoration: BoxDecoration(
+                                color: const Color.fromRGBO(242, 242, 242, 1),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: const InputDecoration(
+                                  hintText: '********',
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  suffixIcon: Icon(Icons.password),
+                                  disabledBorder: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          Text(
+                            title[3],
+                            style: GoogleFonts.cairo(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.grey,
+                            ),
+                          ),
+                          Container(
+                            height: 48,
+                            decoration: BoxDecoration(
+                                color: const Color.fromRGBO(242, 242, 242, 1),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  hintText: profileCubit
+                                      .profileDataModel!.data!.phone!,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  suffixIcon: const Icon(Icons.call),
+                                  disabledBorder: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          Text(
+                            title[4],
+                            style: GoogleFonts.cairo(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.grey,
+                            ),
+                          ),
+                          Container(
+                            height: 48,
+                            decoration: BoxDecoration(
+                                color: const Color.fromRGBO(242, 242, 242, 1),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  hintText: profileCubit
+                                      .profileDataModel!.data!.lat
+                                      .toString()!,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  suffixIcon: const Icon(Icons.location_on),
+                                  disabledBorder: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          Text(
+                            title[5],
+                            style: GoogleFonts.cairo(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.grey,
+                            ),
+                          ),
+                          Container(
+                            height: 48,
+                            decoration: BoxDecoration(
+                                color: const Color.fromRGBO(242, 242, 242, 1),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  hintText: profileCubit
+                                      .profileDataModel!.data!.lng
+                                      .toString()!,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  suffixIcon: const Icon(Icons.location_on),
+                                  disabledBorder: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          Text(
+                            title[6],
+                            style: GoogleFonts.cairo(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.grey,
+                            ),
+                          ),
+                          Container(
+                            height: 48,
+                            decoration: BoxDecoration(
+                                color: const Color.fromRGBO(242, 242, 242, 1),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                enabled: false,
+                                decoration: InputDecoration(
+                                  hintText: profileCubit
+                                      .profileDataModel!.data!.address
+                                      .toString()!,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  suffixIcon: const Icon(Icons.location_city),
+                                  disabledBorder: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+          );
+        },
+      ),
     );
   }
 }

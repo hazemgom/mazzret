@@ -6,6 +6,8 @@ import 'package:mozart_flutter_app/features/auth/data/data_provider/local/cach_k
 import 'package:mozart_flutter_app/features/auth/data/data_provider/local/cache.dart';
 import 'package:mozart_flutter_app/utils/constants/constants.dart';
 
+import '../../../../../main.dart';
+
 class DioHelper {
   Dio dio = Dio();
 
@@ -15,7 +17,7 @@ class DioHelper {
       AppConstants.baseUrl + endPoint,
       options: Options(
         headers: {
-          "authorization": "Bearer ${MyCache.getString(key: CacheKeys.token)}",
+          "authorization": "Bearer ${pref.getString('token')}",
         },
       ),
     );
@@ -35,7 +37,7 @@ class DioHelper {
         data: body,
         options: Options(
           headers: {
-            "authorization": "Bearer ${MyCache.getString(key: CacheKeys.token)}",
+            "authorization": "Bearer ${pref.getString('token')}",
           },
         ),
       );
@@ -85,8 +87,7 @@ class DioHelper {
         data: body,
         options: Options(
           headers: {
-            "authorization":
-                "Bearer ${MyCache.getString(key: CacheKeys.token)}",
+            "authorization": "Bearer ${pref.getString('token')}",
           },
         ));
   }
@@ -98,7 +99,7 @@ class DioHelper {
     return await dio.patch('${AppConstants.baseUrl}$endPoint',
         data: body,
         options: Options(headers: {
-          "authorization": "Bearer ${MyCache.getString(key: CacheKeys.token)}",
+          "authorization": "Bearer ${pref.getString('token')}",
         }));
   }
 
@@ -110,8 +111,7 @@ class DioHelper {
         data: body,
         options: Options(
           headers: {
-            "authorization":
-                "Bearer ${MyCache.getString(key: CacheKeys.token)}",
+            "authorization": "Bearer ${pref.getString('token')}",
           },
         ));
   }
@@ -124,7 +124,7 @@ class DioHelper {
     return await dio.delete(AppConstants.baseUrl + endPoint,
         data: body,
         options: Options(headers: {
-          "authorization": "Bearer ${MyCache.getString(key: CacheKeys.token)}",
+          "authorization": "Bearer ${pref.getString('token')}",
         }));
   }
 
